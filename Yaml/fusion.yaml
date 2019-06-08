@@ -1,0 +1,12 @@
+Login:
+  usernameInp: 'x, //input[@placeholder="用户名"]'
+  pwdInp: 'x, //input[@placeholder="密码"]'
+  captchaInp: 'x, //input[@placeholder="验证码"]'
+  captchaImg: 'x, //p[@class="captcha-group"]/img'
+  loginBut: 'x, //button[@class="btn-login"]'
+
+Home:
+  homeA: 'x, //a[@href="#/"]/img'
+  systemA: 'x, //div[@class="levelMenu clearfix"]/a[1]'
+  userA: 'x, //div[@class="levelMenu clearfix"]/a[2]'
+
