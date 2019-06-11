@@ -2,5 +2,6 @@
 
 __all__ = [
     'login_page',
-    'home_page'
+    'home_page',
+    'user_page'
 ]

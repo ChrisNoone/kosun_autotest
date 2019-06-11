@@ -13,6 +13,7 @@ from selenium.webdriver import ActionChains
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions
 from selenium.webdriver.support.wait import WebDriverWait
+import traceback
 
 
 class BaseDriver(object):
@@ -50,6 +51,17 @@ class BaseDriver(object):
         el = self._locate_element(selector)
         el.click()
 
+    def click_by_text(self, selector, text):
+        locator = self._convert_selector_to_locator(selector)
+        if locator is not None:
+            elements = self._base_driver.find_elements(*locator)
+        else:
+            raise NameError("Please enter a valid locator of targeting elements.")
+        for e in elements:
+            if e.text == text:
+                e.click()
+                break
+
     def type(self, selector, text):
         """
         Operation input box.
@@ -76,7 +88,6 @@ class BaseDriver(object):
             element = self._base_driver.find_element(*locator)
         else:
             raise NameError("Please enter a valid locator of targeting elements.")
-
         return element
 
     def _convert_selector_to_locator(self, selector):
@@ -121,6 +132,15 @@ class BaseDriver(object):
         """
         el = self._locate_element(selector)
         return el.get_attribute(attribute)
+
+    def exist_ele(self, text):
+        selector = 'x, //*[contains(text(), "%s")]' % text
+        try:
+            self._locate_element(selector)
+            return True
+        except:
+            return False
+
 
     # 等待相关
     @staticmethod

@@ -7,6 +7,24 @@ Login:
 
 Home:
   homeA: 'x, //a[@href="#/"]/img'
-  systemA: 'x, //div[@class="levelMenu clearfix"]/a[1]'
-  userA: 'x, //div[@class="levelMenu clearfix"]/a[2]'
+  systemA: 'x, //div[@class="levelMenu clearfix"]/a[contains(text(), "系统")]'
+  userA: 'x, //div[@class="levelMenu clearfix"]/a[contains(text(), "用户")]'
+  reportsA: 'x, //div[@class="levelMenu clearfix"]/a[contains(text(), "报表")]'
+  sportsA: 'x, //div[@class="levelMenu clearfix"]/a[contains(text(), "体育管理")]'
+  marketingA: 'x, //div[@class="levelMenu clearfix"]/a[contains(text(), "营销")]'
+  gameA: 'x, //div[@class="levelMenu clearfix"]/a[contains(text(), "电子游艺")]'
+  contentA: 'x, //div[@class="levelMenu clearfix"]/a[contains(text(), "内容")]'
+  lotteryA: 'x, //div[@class="levelMenu clearfix"]/a[contains(text(), "彩票管理")]'
+  cashA: 'x, //div[@class="levelMenu clearfix"]/a[contains(text(), "现金系统")]'
 
+System:
+  menuUserS: 'x, //span[contains(text(), "账户管理")]'
+
+User:
+  specialagentA: 'x, //a[contains(text(), "特殊代理管理")]'
+  channelA: 'x, //a[contains(text(), "渠道管理")]'
+  userA: 'x, //a[contains(text(), "会员管理")]'
+  userlevelA: 'x, //a[contains(text(), "会员层级管理")]'
+  loginlogA: 'x, //a[contains(text(), "登录日志")]'
+  agentManegementA: 'x, //a[contains(text(), "代理审核")]'
+  agentcodeA: 'x, //a[contains(text(), "代理码管理")]'

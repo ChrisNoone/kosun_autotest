@@ -2,14 +2,25 @@
 
 from Common.box import *
 from TestCase import *
-from Common import HTMLTestHelper
+from Common import HTMLTestHelper, base
 
 
 class Runner(object):
     @staticmethod
     def run_test():
         suite = BaseSuite()
-        tests = [test_login.LoginTest("test_login"), test_home.HomeTest("test_system_a"), test_home.HomeTest("test_user_a")]
+        tests = []
+        test_file = base.CsvHelper().read_data_as_dict("./TestData/all_test.csv")
+        for row in test_file:
+            if int(row["status"]):
+                if row["class"] == "LoginTest":
+                    tests.append(test_login.LoginTest(row["method"]))
+                elif row["class"] == "HomeTest":
+                    tests.append(test_home.HomeTest(row["method"]))
+                elif row["class"] == "UserTest":
+                    tests.append(test_user.UserTest(row["method"]))
+                else:
+                    pass
         suite.add_tests(tests)
         report_time = time.strftime("%Y%m%d%H", time.localtime())
         report_file = "./TestReport/fusion_automate_report_%s.html" % report_time

@@ -38,7 +38,7 @@ class Logger(object):
         self.file_name = path + 'fusion_automate_log_%s.log' % time.strftime("%Y%m%d", time.localtime())
         self.logger = logging.getLogger()
         # 日志输出的级别
-        self.logger.setLevel(logging.INFO)
+        self.logger.setLevel(logging.DEBUG)
         # 日志输出格式
         self.formatter = logging.Formatter('%(asctime)s [%(levelname)s] : %(message)s',
                                            datefmt='%Y-%m-%d %H:%M:%S')
