@@ -28,3 +28,5 @@ User:
   loginlogA: 'x, //a[contains(text(), "登录日志")]'
   agentManegementA: 'x, //a[contains(text(), "代理审核")]'
   agentcodeA: 'x, //a[contains(text(), "代理码管理")]'
+  specialagentInp: 'x, //input[@type="text"]'
+  searchB: 'x, //button[@type="submit"]'

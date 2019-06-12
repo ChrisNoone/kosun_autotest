@@ -138,7 +138,8 @@ class BaseDriver(object):
         try:
             self._locate_element(selector)
             return True
-        except:
+        except Exception as e:
+            self.logger.debug(e)
             return False
 
 
@@ -254,14 +255,15 @@ class BaseCase(unittest.TestCase):
             finally:
                 result.stopTest(self)
             return
+
         expecting_failure_method = getattr(testMethod,
                                            "__unittest_expecting_failure__", False)
         expecting_failure_class = getattr(self,
                                           "__unittest_expecting_failure__", False)
         expecting_failure = expecting_failure_class or expecting_failure_method
         outcome = _Outcome(result)
-        try:
 
+        try:
             self._outcome = outcome
 
             with outcome.testPartExecutor(self):
@@ -271,7 +273,6 @@ class BaseCase(unittest.TestCase):
                 with outcome.testPartExecutor(self, isTest=True):
                     testMethod()
                 outcome.expecting_failure = False
-
                 # 尝试异常继续运行
                 with outcome.testPartExecutor(self):
                     self.tearDown()
@@ -333,6 +334,14 @@ class BaseCase(unittest.TestCase):
         return doc and doc.split("\n")[0].strip() or None
         # 用[1]报错，数组超出界限，报告是空的，改为[0]就可以了
         # return doc and doc.split("\n")[0].strip() or None
+
+    def _addSkip(self, result, test_case, reason):
+        addSkip = getattr(result, 'addSkip', None)
+        if addSkip is not None:
+            addSkip(test_case, reason)
+        else:
+            self.logger.warning("TestResult has no addSkip method, skips not reported")
+            result.addSuccess(test_case)
 
 
 class BaseSuite(unittest.TestSuite):

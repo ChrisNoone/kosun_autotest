@@ -23,6 +23,7 @@ class UserTest(BaseCase):
     def tearDownClass(cls):
         cls.driver.quit()
 
+    @unittest.skip('repeat with test_search_specialagent')
     def test_jump_specialagent(self):
         self.user_page = user_page.UserPageElement(self.driver)
         self.user_page.click_specialagent()
@@ -57,3 +58,8 @@ class UserTest(BaseCase):
         self.user_page = user_page.UserPageElement(self.driver)
         self.user_page.click_agentcode()
         self.assertEqual(self.driver.exist_ele('代理推广码'), True)
+
+    def test_search_specialagent(self):
+        self.user_page = user_page.UserPageElement(self.driver)
+        self.user_page.search_specialagent()
+        self.assertEqual(self.driver.exist_ele('修改密码'), True)

@@ -3,6 +3,8 @@
 import datetime
 import io
 import sys
+import re
+import time
 import unittest
 from xml.sax import saxutils
 from Common import base
@@ -42,7 +44,7 @@ HTMLTestRunner is a counterpart to unittest's TextTestRunner. E.g.
 
 
 ------------------------------------------------------------------------
-Copyright (c) 2004-2007, Wai Yip Tung
+Copyright (c) 2019-2019, Chris Lau
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
@@ -98,6 +100,8 @@ Version in 0.7.1
 
 # TODO: color stderr
 # TODO: simplify javascript using ,ore than 1 class in the class attribute?
+
+
 # ------------------------------------------------------------------------
 # The redirectors below are used to capture output during testing. Output
 # sent to sys.stdout and sys.stderr are automatically captured. However
@@ -132,7 +136,8 @@ class OutputRedirector(object):
 stdout_redirector = OutputRedirector(sys.stdout)
 stderr_redirector = OutputRedirector(sys.stderr)
 
-# -------------------- Template -------------------
+# ----------------------------------------------------------------------
+# Template
 
 
 class Template_mixin(object):
@@ -179,6 +184,7 @@ class Template_mixin(object):
         0: 'pass',
         1: 'fail',
         2: 'error',
+        3: 'skip'
     }
 
     DEFAULT_TITLE = 'Unit Test Report'
@@ -299,13 +305,13 @@ function showOutput(id, name) {
 </body>
 </html>
 """
-    # variables: (title, generator, stylesheet, heading, report, ending)
+# variables: (title, generator, stylesheet, heading, report, ending)
 
-    # ------------------------------------------------------------------------
-    # Stylesheet
-    #
-    # alternatively use a <link> for external style sheet, e.g.
-    #   <link rel="stylesheet" href="$url" type="text/css">
+# ------------------------------------------------------------------------
+# Stylesheet
+#
+# alternatively use a <link> for external style sheet, e.g.
+#   <link rel="stylesheet" href="$url" type="text/css">
 
     STYLESHEET_TMPL = """
 <style type="text/css" media="screen">
@@ -415,9 +421,9 @@ a.popup_link:hover {
 
     REPORT_TMPL = """
 <p id='show_detail_line'>Show
-<a href='javascript:showCase(0)'>Summary</a>
-<a href='javascript:showCase(1)'>Failed</a>
 <a href='javascript:showCase(2)'>All</a>
+<a href='javascript:showCase(1)'>Failed</a>
+<a href='javascript:showCase(0)'>Summary</a>
 </p>
 <table id='result_table'>
 <colgroup>
@@ -531,6 +537,7 @@ class _TestResult(TestResult):
         self.stdout0 = None
         self.stderr0 = None
         self.success_count = 0
+        self.skipped_count = 0
         self.failure_count = 0
         self.error_count = 0
         self.verbosity = verbosity
@@ -586,6 +593,18 @@ class _TestResult(TestResult):
         else:
             sys.stderr.write('.')
 
+    def addSkip(self, test, reason):
+        self.skipped_count += 1
+        TestResult.addSkip(self, test, reason)
+        output = self.complete_output()
+        self.result.append((3, test, '', reason))
+        if self.verbosity > 1:
+            sys.stderr.write('skip ')
+            sys.stderr.write(str(test))
+            sys.stderr.write('\n')
+        else:
+            sys.stderr.write('s')
+
     def addError(self, test, err):
         self.error_count += 1
         TestResult.addError(self, test, err)
@@ -594,7 +613,7 @@ class _TestResult(TestResult):
         _, _exc_str = self.errors[-1]
         output = self.complete_output()
         self.result.append((2, test, output, _exc_str))
-        if self.verbosity > 1:
+        if self.verbosity > 0:
             sys.stderr.write('E  ')
             sys.stderr.write(str(test))
             sys.stderr.write('\n')
@@ -609,7 +628,7 @@ class _TestResult(TestResult):
         _, _exc_str = self.failures[-1]
         output = self.complete_output()
         self.result.append((1, test, output, _exc_str))
-        if self.verbosity > 1:
+        if self.verbosity > 0:
             sys.stderr.write('F  ')
             sys.stderr.write(str(test))
             sys.stderr.write('\n')
@@ -735,12 +754,14 @@ class HTMLTestRunner(Template_mixin):
         sorted_result = self.sortResult(result.result)
         for cid, (cls, cls_results) in enumerate(sorted_result):
             # subtotal for a class
-            np = nf = ne = 0
+            np = nf = ne = ns = 0
             for n, t, o, e in cls_results:
                 if n == 0:
                     np += 1
                 elif n == 1:
                     nf += 1
+                elif n == 3:
+                    ns += 1
                 else:
                     ne += 1
 
@@ -755,10 +776,11 @@ class HTMLTestRunner(Template_mixin):
             row = self.REPORT_CLASS_TMPL % dict(
                 style=ne > 0 and 'errorClass' or nf > 0 and 'failClass' or 'passClass',
                 desc=desc,
-                count=np+nf+ne,
+                count=np+nf+ne+ns,
                 Pass=np,
                 fail=nf,
                 error=ne,
+                skip=ns,
                 cid='c%s' % (cid+1),
             )
             rows.append(row)
@@ -772,13 +794,14 @@ class HTMLTestRunner(Template_mixin):
             Pass=str(result.success_count),
             fail=str(result.failure_count),
             error=str(result.error_count),
+            skip=str(result.skipped_count)
         )
         return report
 
     def _generate_report_test(self, rows, cid, tid, n, t, o, e):
         # e.g. 'pt1.1', 'ft1.1', etc
         has_output = bool(o or e)
-        tid = (n == 0 and 'p' or 'f') + 't%s.%s' % (cid+1, tid+1)
+        tid = (n == 0 and 'p' or n == 3 and 's' or 'f') + 't%s.%s' % (cid+1, tid+1)
         name = t.id().split('.')[-1]
         doc = t.shortDescription() or ""
         desc = doc and ('%s: %s' % (name, doc)) or name
@@ -819,7 +842,7 @@ class HTMLTestRunner(Template_mixin):
         row = tmpl % dict(
             tid=tid,
             Class=(n == 0 and 'hiddenRow' or 'none'),
-            style=n == 2 and 'errorCase' or (n == 1 and 'failCase' or 'none'),
+            style=n == 2 and 'errorCase' or (n == 1 and 'failCase') or (n == 3 and 'skipCase' or 'none'),
             desc=desc,
             script=script,
             status=self.STATUS[n],
@@ -828,6 +851,65 @@ class HTMLTestRunner(Template_mixin):
         rows.append(row)
         if not has_output:
             return
+
+    """
+    def _generate_report_test(self, rows, cid, tid, n, t, o, e):
+        # e.g. 'pt1.1', 'ft1.1', etc
+        has_output = bool(o or e)
+        tid = (n == 0 and 'p' or n == 3 and 's' or 'f') + 't%s.%s' % (cid + 1, tid + 1)
+        name = t.id().split('.')[-1]
+        doc = t.shortDescription() or ""
+        desc = doc and ('%s: %s' % (name, doc)) or name
+        tmpl = has_output and self.REPORT_TEST_WITH_OUTPUT_TMPL or self.REPORT_TEST_NO_OUTPUT_TMPL
+        uo1 = ""
+        # o and e should be byte string because they are collected from stdout and stderr?
+        if isinstance(o, str):
+            uo = str(o)
+        else:
+            uo = e
+        if isinstance(e, str):
+            # TODO: some problem with 'string_escape': it escape \n and mess up formating
+            # ue = unicode(e.encode('string_escape'))
+            ue = e
+        else:
+            ue = o
+        script = self.REPORT_TEST_OUTPUT_TMPL % dict(
+            id=tid,
+            output=saxutils.escape(str(uo) + str(ue))
+        )
+
+        if "shot_picture_name" in str(saxutils.escape(str(ue))):
+            hidde_status = ''
+            pattern = re.compile(r'AssertionError:.*?shot_picture_name=(.*)', re.S)
+            shot_name = re.search(pattern, str(saxutils.escape(str(e))))
+            try:
+                image_url = "http://192.168.99.105/contractreport/screenshot/" + time.strftime("%Y-%m-%d",
+                                                                                               time.localtime(
+                                                                                                   time.time())) + "/" + shot_name.group(
+                    1) + ".png"
+            except Exception as e:
+                image_url = "http://192.168.99.105/contractreport/screenshot/" + time.strftime("%Y-%m-%d",
+                                                                                               time.localtime(
+                                                                                                   time.time()))
+
+        else:
+            hidde_status = '''hidden="hidden"'''
+            image_url = ''
+        row = tmpl % dict(
+            tid=tid,
+            Class=(n == 0 and 'hiddenRow' or 'none'),
+            style=n == 2 and 'errorCase' or (n == 1 and 'failCase') or (n == 3 and 'skipCase' or 'none'),
+            desc=desc,
+            script=script,
+            hidde=hidde_status,
+            image=image_url,
+            status=self.STATUS[n],
+        )
+
+        rows.append(row)
+        if not has_output:
+            return
+    """
 
     def _generate_ending(self):
         return self.ENDING_TMPL
@@ -840,6 +922,8 @@ class HTMLTestRunner(Template_mixin):
 # Note: Reuse unittest.TestProgram to launch test. In the future we may
 # build our own launcher to support more specific command line
 # parameters like test title, CSS, etc.
+
+
 class TestProgram(unittest.TestProgram):
     """
     A variation of the unittest.TestProgram. Please refer to the base

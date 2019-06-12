@@ -24,7 +24,7 @@ class Runner(object):
         suite.add_tests(tests)
         report_time = time.strftime("%Y%m%d%H", time.localtime())
         report_file = "./TestReport/fusion_automate_report_%s.html" % report_time
-        runner = HTMLTestHelper.HTMLTestRunner(file_name=report_file, verbosity=2)
+        runner = HTMLTestHelper.HTMLTestRunner(file_name=report_file, verbosity=1)
         runner.run(suite)
 
 

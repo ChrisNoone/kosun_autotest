@@ -6,6 +6,7 @@ from Common.box import *
 
 class UserPageElement(BasePage):
     cd_user = YamlHelper.yaml_read('./Yaml/fusion.yaml')['User']
+    sa = ConfigHelper().conf_read('fusion', 'apecialagent')
 
     def click_specialagent(self):
         self.driver.click(self.cd_user['specialagentA'])
@@ -34,3 +35,9 @@ class UserPageElement(BasePage):
     def click_agentcode(self):
         self.driver.click(self.cd_user['agentcodeA'])
         self.driver.forced_wait(1)
+
+    def search_specialagent(self):
+        self.driver.click(self.cd_user['specialagentA'])
+        self.driver.type(self.cd_user['specialagentInp'], self.sa)
+        self.driver.click(self.cd_user['searchB'])
+        self.driver.forced_wait(2)
