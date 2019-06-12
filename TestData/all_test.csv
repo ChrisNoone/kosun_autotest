@@ -10,7 +10,7 @@ HomeTest,test_jump_content,0,
 HomeTest,test_jump_lottery,0,
 HomeTest,test_jump_cash,0,
 UserTest,test_jump_specialagent,1,打开特殊代理管理菜单
-UserTest,test_jump_channel,0,
+UserTest,test_jump_channel,1,
 UserTest,test_jump_user,0,
 UserTest,test_jump_userlevel,0,
 UserTest,test_jump_loginlog,0,

@@ -228,6 +228,14 @@ function showCase(level) {
                 tr.className = 'hiddenRow';
             }
         }
+        if (id.substr(0,2) == 'st') {
+            if (level > 1) {
+                tr.className = '';
+            }
+            else {
+                tr.className = 'hiddenRow';
+            }
+        }
     }
 }
 
@@ -440,6 +448,7 @@ a.popup_link:hover {
     <td>Pass</td>
     <td>Fail</td>
     <td>Error</td>
+    <td>Skip</td>
     <td>View</td>
 </tr>
 %(test_list)s
@@ -449,6 +458,7 @@ a.popup_link:hover {
     <td>%(Pass)s</td>
     <td>%(fail)s</td>
     <td>%(error)s</td>
+    <td>%(skip)s</td>
     <td>&nbsp;</td>
 </tr>
 </table>
@@ -462,6 +472,7 @@ a.popup_link:hover {
     <td>%(Pass)s</td>
     <td>%(fail)s</td>
     <td>%(error)s</td>
+    <td>%(skip)s</td>
     <td><a href="javascript:showClassDetail('%(cid)s',%(count)s)">Detail</a></td>
 </tr>
 """
@@ -470,7 +481,7 @@ a.popup_link:hover {
     REPORT_TEST_WITH_OUTPUT_TMPL = r"""
 <tr id='%(tid)s' class='%(Class)s'>
     <td class='%(style)s'><div class='testcase'>%(desc)s</div></td>
-    <td colspan='5' align='center'>
+    <td colspan='6' align='center'>
 
     <!--css div popup start-->
     <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_%(tid)s')" >
@@ -495,7 +506,7 @@ a.popup_link:hover {
     REPORT_TEST_NO_OUTPUT_TMPL = r"""
 <tr id='%(tid)s' class='%(Class)s'>
     <td class='%(style)s'><div class='testcase'>%(desc)s</div></td>
-    <td colspan='5' align='center'>%(status)s</td>
+    <td colspan='6' align='center'>%(status)s</td>
 </tr>
 """
     # variables: (tid, Class, style, desc, status)
@@ -592,6 +603,7 @@ class _TestResult(TestResult):
             sys.stderr.write('\n')
         else:
             sys.stderr.write('.')
+            sys.stderr.write('\n')
 
     def addSkip(self, test, reason):
         self.skipped_count += 1
@@ -603,7 +615,8 @@ class _TestResult(TestResult):
             sys.stderr.write(str(test))
             sys.stderr.write('\n')
         else:
-            sys.stderr.write('s')
+            sys.stderr.write('S')
+            sys.stderr.write('\n')
 
     def addError(self, test, err):
         self.error_count += 1
@@ -613,12 +626,13 @@ class _TestResult(TestResult):
         _, _exc_str = self.errors[-1]
         output = self.complete_output()
         self.result.append((2, test, output, _exc_str))
-        if self.verbosity > 0:
+        if self.verbosity > 1:
             sys.stderr.write('E  ')
             sys.stderr.write(str(test))
             sys.stderr.write('\n')
         else:
             sys.stderr.write('E')
+            sys.stderr.write('\n')
 
     def addFailure(self, test, err):
         self.failure_count += 1
@@ -628,12 +642,13 @@ class _TestResult(TestResult):
         _, _exc_str = self.failures[-1]
         output = self.complete_output()
         self.result.append((1, test, output, _exc_str))
-        if self.verbosity > 0:
+        if self.verbosity > 1:
             sys.stderr.write('F  ')
             sys.stderr.write(str(test))
             sys.stderr.write('\n')
         else:
             sys.stderr.write('F')
+            sys.stderr.write('\n')
 
 
 class HTMLTestRunner(Template_mixin):
@@ -790,7 +805,7 @@ class HTMLTestRunner(Template_mixin):
 
         report = self.REPORT_TMPL % dict(
             test_list=''.join(rows),
-            count=str(result.success_count+result.failure_count+result.error_count),
+            count=str(result.success_count+result.failure_count+result.error_count+result.skipped_count),
             Pass=str(result.success_count),
             fail=str(result.failure_count),
             error=str(result.error_count),
@@ -841,7 +856,8 @@ class HTMLTestRunner(Template_mixin):
 
         row = tmpl % dict(
             tid=tid,
-            Class=(n == 0 and 'hiddenRow' or 'none'),
+            # Class=(n == 0 and 'hiddenRow' or 'none'),
+            Class='none',
             style=n == 2 and 'errorCase' or (n == 1 and 'failCase') or (n == 3 and 'skipCase' or 'none'),
             desc=desc,
             script=script,
