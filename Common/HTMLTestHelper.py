@@ -251,15 +251,19 @@ function showClassDetail(cid, count) {
             tid = 'p' + tid0;
             tr = document.getElementById(tid);
         }
+        if (!tr) {
+            tid = 's' + tid0;
+            tr = document.getElementById(tid);
+        }
         id_list[i] = tid;
-        if (tr.className) {
+        if (tr.className === 'hiddenRow') {
             toHide = 0;
         }
     }
     for (var i = 0; i < count; i++) {
         tid = id_list[i];
         if (toHide) {
-            document.getElementById('div_'+tid).style.display = 'none'
+            // document.getElementById('div_'+tid).style.display = 'none';
             document.getElementById(tid).className = 'hiddenRow';
         }
         else {

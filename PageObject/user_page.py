@@ -13,7 +13,7 @@ class UserPageElement(BasePage):
         self.driver.forced_wait(1)
 
     def click_channel(self):
-        self.driver.click(self.cd_user['channelA2'])
+        self.driver.click(self.cd_user['channelA'])
         self.driver.forced_wait(1)
 
     def click_user(self):
