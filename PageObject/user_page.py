@@ -37,7 +37,15 @@ class UserPageElement(BasePage):
         self.driver.forced_wait(1)
 
     def search_specialagent(self):
-        self.driver.click(self.cd_user['specialagentA'])
         self.driver.type(self.cd_user['specialagentInp'], self.sa)
+        self.driver.click(self.cd_user['searchB'])
+        self.driver.forced_wait(2)
+
+    def search_agentcode(self, **kw):
+        if kw['code'] is not None:
+            self.driver.type(self.cd_user['agentcodeInp'], kw['code'])
+        if kw['agent'] is not None:
+            self.driver.type(self.cd_user['agentInp'], kw['agent'])
+        self.driver.forced_wait(1)
         self.driver.click(self.cd_user['searchB'])
         self.driver.forced_wait(2)

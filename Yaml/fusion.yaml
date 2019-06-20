@@ -30,3 +30,5 @@ User:
   agentcodeA: 'x, //a[contains(text(), "代理码管理")]'
   specialagentInp: 'x, //input[@type="text"]'
   searchB: 'x, //button[@type="submit"]'
+  agentcodeInp: 'x, //*[contains(text(), "代理推广码")]/../input'
+  agentInp: 'x, //*[contains(text(), "代理用户")]/../input'

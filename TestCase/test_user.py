@@ -61,5 +61,14 @@ class UserTest(BaseCase):
 
     def test_search_specialagent(self):
         self.user_page = user_page.UserPageElement(self.driver)
+        self.user_page.click_specialagent()
         self.user_page.search_specialagent()
         self.assertEqual(self.driver.exist_ele('修改密码'), True)
+
+    def test_search_agentcode(self):
+        self.user_page = user_page.UserPageElement(self.driver)
+        self.user_page.click_agentcode()
+        # data1 = {'code': '501315', 'agent': ''}
+        data2 = {'code': '', 'agent': 'demo02'}
+        self.user_page.search_agentcode(**data2)
+        self.assertEqual(self.driver.exist_ele('demo02'), True)
