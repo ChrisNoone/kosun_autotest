@@ -32,3 +32,7 @@ User:
   searchB: 'x, //button[@type="submit"]'
   agentcodeInp: 'x, //*[contains(text(), "代理推广码")]/../input'
   agentInp: 'x, //*[contains(text(), "代理用户")]/../input'
+  userInp: 'x, //*[contains(text(), "用户名")]/following-sibling::input'
+  agentstatusDiv: 'x, //*[contains(text(), "代理状态")]/following-sibling::div'
+  statusLi: 'x, //ul[@role="listbox"]/li'
+

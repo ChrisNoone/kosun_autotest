@@ -142,6 +142,34 @@ class BaseDriver(object):
             self.logger.debug(e)
             return False
 
+    def table_is_not_null(self):
+        # css定位，找class包含card的div容器，然后找列表的body，判断它非空
+        selector = 's, div[class*="card"] tbody'
+        try:
+            table = self._locate_element(selector).text
+            if table:
+                return True
+            else:
+                return False
+        except Exception as e:
+            self.logger.debug(e)
+            return False
+
+    def type_search_input(self, name, value):
+        selector = 'x, //span[contains(text(), "%s")]/following-sibling::*' % name
+        try:
+            type = self._locate_element(selector).tag_name
+            if type == 'input':
+                self.type(selector, value)
+            else:
+                selector_li = 'x, //li[contains(text(), "%s")]' % value
+                self.click(selector)
+                self.forced_wait(0.5)
+                self.click(selector_li)
+        except Exception as e:
+            self.logger.debug(e)
+            return False
+
 
     # 等待相关
     @staticmethod
