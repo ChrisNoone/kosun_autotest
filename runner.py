@@ -19,6 +19,15 @@ class Runner(object):
                     tests.append(test_home.HomeTest(row["method"]))
                 elif row["class"] == "UserTest":
                     tests.append(test_user.UserTest(row["method"]))
+                # elif row["class"] == "UserTest":
+                #     if row["mode"] == 'D':
+                #         test_data = [{'code': '501315', 'agent': ''}, {'code': '', 'agent': 'demo02'}]
+                #         for i in test_data:
+                #             setattr(test_user.UserTest, row["method"] + '_%s_%s' % (i['code'], i['agent']),
+                #                     test_user.UserTest.creat_test(**i))
+                #             tests.append(test_user.UserTest(row["method"] + '_%s_%s' % (i['code'], i['agent'])))
+                #     else:
+                #         tests.append(test_user.UserTest(row["method"]))
                 else:
                     pass
         suite.add_tests(tests)
