@@ -139,7 +139,7 @@ class BaseDriver(object):
             self._locate_element(selector)
             return True
         except Exception as e:
-            self.logger.debug(e)
+            self.logger.error(e)
             return False
 
     def table_is_not_null(self):

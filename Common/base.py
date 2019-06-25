@@ -8,6 +8,7 @@ import sys
 import requests
 import tesserocr
 import csv
+import traceback
 from PIL import Image
 
 
@@ -86,6 +87,7 @@ class Logger(object):
         ch = logging.StreamHandler(sys.stdout)
         ch.setLevel(logging.DEBUG)
         ch.setFormatter(self.formatter)
+        self.logger.addHandler(fh)
 
         # self.logger.addHandler(ch)
         if level == 'info':
@@ -96,11 +98,14 @@ class Logger(object):
             self.logger.warning(message)
         elif level == 'error':
             self.logger.error(message)
+            # 使用traceback打印报错的详细位置
+            self.logger.error(traceback.format_exc())
 
         # 这两行代码为了避免日志输出重复
         self.logger.removeHandler(ch)
         self.logger.removeHandler(fh)
         fh.close()
+        ch.close()
 
 
 class CsvHelper(object):

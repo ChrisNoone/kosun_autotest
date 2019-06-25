@@ -34,6 +34,7 @@ User:
   statusLi: 'x, //ul[@role="listbox"]/li'
 
 System:
+  searchB: 'x, //button[@type="submit"]'
   systemDiv: 'x, //div[@class="menu"]//span[contains(text(), "系统设置")]'
   behaviorDiv: 'x, //div[@class="menu"]//span[contains(text(), "行为管理")]'
   memberDiv: 'x, //div[@class="menu"]//span[contains(text(), "后台用户管理")]'
@@ -46,3 +47,9 @@ System:
   authgroupA: 'x, //a[contains(text(), "权限管理")]'
   feedbackA: 'x, //a[contains(text(), "用户反馈")]'
   memberA: 'x, //a[contains(text(), "管理员信息")]'
+  commonDiv: 'x, //div/div[contains(text(), "公共")]'
+  pcDiv: 'x, //div/div[contains(text(), "pc")]'
+  h5Div: 'x, //div/div[contains(text(), "h5")]'
+  appDiv: 'x, //div/div[contains(text(), "app")]'
+  regconfDiv: 'x, //div/div[contains(text(), "注册配置")]'
+  agentregconfDiv: 'x, //div/div[contains(text(), "代理注册配置")]'

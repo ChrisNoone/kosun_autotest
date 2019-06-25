@@ -38,3 +38,46 @@ class SystemTest(BaseCase):
         for d in data:
             self.system_page.open_menu(*d)
             self.assertEqual(self.driver.exist_ele(d[2]), True, '%s查询结果为空' % str(d))
+
+    def test_switch_siteconfig_tab(self):
+        try:
+            menu = ('系统设置', '网站设置')
+            self.system_page.open_menu(*menu)
+            data = [('注册配置', '推荐人ID'), ('pc', '首页:悬浮'), ('公共', '在线客服地址'), ('h5', '开屏图片'),
+                    ('app', '开屏图片'), ('代理注册配置', '邮箱')]
+            for d in data:
+                self.system_page.switch_siteconfig_tab(d[0])
+                self.assertEqual(self.driver.exist_ele(d[1]), True, '%s查询结果为空' % str(d))
+        except Exception as e:
+            self.logger.error(e)
+
+    def test_search_menumanage(self):
+        menu = ('系统设置', '菜单管理')
+        data = [{'menuname': '体育管理', 'url': ''},
+                {'menuname': '', 'url': 'Lottery'}]
+        for d in data:
+            self.system_page.open_menu(*menu)
+            self.system_page.search_menumanage(**d)
+            self.assertEqual(self.driver.table_is_not_null(), True, '%s查询结果为空' % d)
+
+    def test_search_baseshell(self):
+        menu = ('系统设置', '基础壳配置')
+        data = [{'type': 'web页面', 'platform': '', 'uniquecode': '', 'name': '', 'version': ''},
+                {'type': '', 'platform': '安卓', 'uniquecode': '', 'name': '', 'version': ''},
+                {'type': '', 'platform': '', 'uniquecode': 'fusion.apk', 'name': '', 'version': ''},
+                {'type': '', 'platform': '', 'uniquecode': '', 'name': 'fbgXXASDASDASDAS', 'version': ''},
+                {'type': '', 'platform': '', 'uniquecode': '', 'name': '', 'version': '59'}]
+        for d in data:
+            self.system_page.open_menu(*menu)
+            self.system_page.search_baseshell(**d)
+            self.assertEqual(self.driver.table_is_not_null(), True, '%s查询结果为空' % d)
+
+    def test_search_baseshelldomain(self):
+        menu = ('系统设置', '基础壳多域名')
+        data = [{'name': 'fusion.cpmobileapi.net'}]
+        for d in data:
+            self.system_page.open_menu(*menu)
+            self.system_page.search_baseshelldomain(**d)
+            self.assertEqual(self.driver.table_is_not_null(), True, '%s查询结果为空' % d)
+
+
