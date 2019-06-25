@@ -25,39 +25,42 @@ class UserTest(BaseCase):
         cls.driver.quit()
 
     @unittest.skip('repeat with test_search_specialagent')
+    # 跳转到特殊代理管理页面
     def test_jump_specialagent(self):
         self.user_page.click_specialagent()
         self.assertEqual(self.driver.exist_ele('特殊代理用户'), True)
 
+    # 跳转到渠道管理页面
     def test_jump_channel(self):
         self.user_page.click_channel()
         self.assertEqual(self.driver.exist_ele('渠道类型'), True)
 
+    # 跳转到会员管理页面
     def test_jump_user(self):
         self.user_page.click_user()
         self.assertEqual(self.driver.exist_ele('用户类别'), True)
 
+    # 跳转到会员层级管理页面
     def test_jump_userlevel(self):
         self.user_page.click_userlevel()
         self.assertEqual(self.driver.exist_ele('层级名称'), True)
 
+    # 跳转到登录日志页面
     def test_jump_loginlog(self):
         self.user_page.click_loginlog()
         self.assertEqual(self.driver.exist_ele('登录IP'), True)
 
+    # 跳转到代理审核页面
     def test_jump_agentManegement(self):
         self.user_page.click_agentManegement()
         self.assertEqual(self.driver.exist_ele('代理状态'), True)
 
+    # 跳转到代理码管理页面
     def test_jump_agentcode(self):
         self.user_page.click_agentcode()
         self.assertEqual(self.driver.exist_ele('代理推广码'), True)
 
-    def test_search_specialagent(self):
-        self.user_page.click_specialagent()
-        self.user_page.search_specialagent()
-        self.assertEqual(self.driver.table_is_not_null(), True)
-
+    # 代理码管理页面搜索
     def test_search_agentcode(self,):
         data = [{'code': '501315', 'agent': ''},
                 {'code': '', 'agent': 'demo01'}]
@@ -73,6 +76,7 @@ class UserTest(BaseCase):
     #         self.test_search_agentcode(**kw)
     #     return func
 
+    # 代理审核页面搜索
     def test_search_agentManegement(self):
         data = [{'user': 'artee22', 'status': ''},
                 {'user': '', 'status': '已拒绝'},
@@ -82,6 +86,7 @@ class UserTest(BaseCase):
             self.user_page.search_agentManegement(**d)
             self.assertEqual(self.driver.table_is_not_null(), True, '%s查询结果为空' % d)
 
+    # 登录日志页面搜索
     def test_search_loginlog(self):
         data = [{'ip': '47.254.201.214', 'user': '', 'mode': ''},
                 {'ip': '', 'user': 'artee23', 'mode': ''},
@@ -91,6 +96,7 @@ class UserTest(BaseCase):
             self.user_page.search_loginlog(**d)
             self.assertEqual(self.driver.table_is_not_null(), True, '%s查询结果为空' % d)
 
+    # 会员层级管理页面搜索
     def test_search_userlevel(self):
         data = [{'levelname': '铂金会员'},
                 {'levelname': 'test'}
@@ -99,3 +105,31 @@ class UserTest(BaseCase):
             self.user_page.click_userlevel()
             self.user_page.search_userlevel(**d)
             self.assertEqual(self.driver.table_is_not_null(), True, '%s查询结果为空' % d)
+
+    # 会员管理页面搜索
+    def test_search_user(self):
+        data = [{'usertype': '', 'bank': '', 'mail': '', 'number': '', 'realname': '', 'user': 'artee11',
+                 'userlevel': '', 'mode': '', 'resource': '', 'is_online': '', 'status': '', 'channel': '', 'qq': ''},
+                {'usertype': '代理', 'bank': '', 'mail': '', 'number': '', 'realname': '', 'user': '',
+                 'userlevel': '', 'mode': '', 'resource': '', 'is_online': '', 'status': '', 'channel': '', 'qq': ''},
+                {'usertype': '', 'bank': '', 'mail': '', 'number': '', 'realname': '', 'user': '',
+                 'userlevel': '', 'mode': '', 'resource': '', 'is_online': '', 'status': '禁用', 'channel': '', 'qq': ''}
+                ]
+        for d in data:
+            self.user_page.click_user()
+            self.user_page.search_user(**d)
+            self.assertEqual(self.driver.table_is_not_null(), True, '%s查询结果为空' % d)
+
+    def test_search_channel(self):
+        data = [{'channeltype': '非域名', 'channelname': '', 'agentcode': ''},
+                {'channeltype': '', 'channelname': 'app store', 'agentcode': ''}]
+        for d in data:
+            self.user_page.click_channel()
+            self.user_page.search_channel(**d)
+            self.assertEqual(self.driver.table_is_not_null(), True, '%s查询结果为空' % d)
+
+    # 特殊代理管理页面搜索
+    def test_search_specialagent(self):
+        self.user_page.click_specialagent()
+        self.user_page.search_specialagent()
+        self.assertEqual(self.driver.table_is_not_null(), True)

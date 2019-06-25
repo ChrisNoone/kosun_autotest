@@ -79,3 +79,45 @@ class UserPageElement(BasePage):
         self.driver.forced_wait(1)
         self.driver.click(self.cd_user['searchB'])
         self.driver.forced_wait(2)
+
+    def search_user(self, **kw):
+        if kw['usertype']:
+            self.driver.type_search_input('用户类别', kw['usertype'])
+        if kw['bank']:
+            self.driver.type_search_input('银行账号', kw['bank'])
+        if kw['mail']:
+            self.driver.type_search_input('邮箱', kw['mail'])
+        if kw['number']:
+            self.driver.type_search_input('手机号码', kw['number'])
+        if kw['realname']:
+            self.driver.type_search_input('真实姓名', kw['realname'])
+        if kw['user']:
+            self.driver.type_search_input('用户名', kw['user'])
+        if kw['userlevel']:
+            self.driver.type_search_input('用户层级', kw['userlevel'])
+        if kw['mode']:
+            self.driver.type_search_input('匹配模式', kw['mode'])
+        if kw['resource']:
+            self.driver.type_search_input('客户来源', kw['resource'])
+        if kw['is_online']:
+            self.driver.type_search_input('是否筛选在线用户', kw['is_online'])
+        if kw['status']:
+            self.driver.type_search_input('用户状态', kw['status'])
+        if kw['channel']:
+            self.driver.type_search_input('注册渠道', kw['channel'])
+        if kw['qq']:
+            self.driver.type_search_input('QQ', kw['qq'])
+        self.driver.forced_wait(1)
+        self.driver.click(self.cd_user['searchB'])
+        self.driver.forced_wait(2)
+
+    def search_channel(self, **kw):
+        if kw['channeltype']:
+            self.driver.type_search_input('渠道类型', kw['channeltype'])
+        if kw['channelname']:
+            self.driver.type_search_input('渠道名称', kw['channelname'])
+        if kw['agentcode']:
+            self.driver.type_search_input('代理码', kw['agentcode'])
+        self.driver.forced_wait(1)
+        self.driver.click(self.cd_user['searchB'])
+        self.driver.forced_wait(2)

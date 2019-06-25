@@ -21,4 +21,6 @@ UserTest,test_search_agentcode,L,0,搜索代理码
 UserTest,test_search_agentcode,D,0,
 UserTest,test_search_agentManegement,L,0,搜索代理审核
 UserTest,test_search_loginlog,L,0,搜索登录日志
-UserTest,test_search_userlevel,L,1,搜索会员层级
+UserTest,test_search_userlevel,L,0,搜索会员层级
+UserTest,test_search_user,L,0,搜索会员管理
+UserTest,test_search_channel,L,1,搜索渠道管理
