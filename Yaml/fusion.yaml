@@ -17,9 +17,6 @@ Home:
   lotteryA: 'x, //div[@class="levelMenu clearfix"]/a[contains(text(), "彩票管理")]'
   cashA: 'x, //div[@class="levelMenu clearfix"]/a[contains(text(), "现金系统")]'
 
-System:
-  menuUserS: 'x, //span[contains(text(), "账户管理")]'
-
 User:
   specialagentA: 'x, //a[contains(text(), "特殊代理管理")]'
   channelA: 'x, //a[contains(text(), "渠道管理")]'
@@ -36,3 +33,16 @@ User:
   agentstatusDiv: 'x, //*[contains(text(), "代理状态")]/following-sibling::div'
   statusLi: 'x, //ul[@role="listbox"]/li'
 
+System:
+  systemDiv: 'x, //div[@class="menu"]//span[contains(text(), "系统设置")]'
+  behaviorDiv: 'x, //div[@class="menu"]//span[contains(text(), "行为管理")]'
+  memberDiv: 'x, //div[@class="menu"]//span[contains(text(), "后台用户管理")]'
+  siteconfigA: 'x, //a[contains(text(), "网站设置")]'
+  menumanageA: 'x, //a[contains(text(), "菜单管理")]'
+  baseshellA: 'x, //a[contains(text(), "基础壳配置")]'
+  baseshelldomainA: 'x, //a[contains(text(), "基础壳多域名")]'
+  actionlogA: 'x, //a[contains(text(), "行为日志")]'
+  actionA: 'x, //a[contains(text(), "用户行为")]'
+  authgroupA: 'x, //a[contains(text(), "权限管理")]'
+  feedbackA: 'x, //a[contains(text(), "用户反馈")]'
+  memberA: 'x, //a[contains(text(), "管理员信息")]'

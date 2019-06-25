@@ -19,6 +19,8 @@ class Runner(object):
                     tests.append(test_home.HomeTest(row["method"]))
                 elif row["class"] == "UserTest":
                     tests.append(test_user.UserTest(row["method"]))
+                elif row["class"] == "SystemTest":
+                    tests.append(test_system.SystemTest(row["method"]))
                 # elif row["class"] == "UserTest":
                 #     if row["mode"] == 'D':
                 #         test_data = [{'code': '501315', 'agent': ''}, {'code': '', 'agent': 'demo02'}]

@@ -3,5 +3,6 @@
 __all__ = [
     'test_login',
     'test_home',
-    'test_user'
+    'test_user',
+    'test_system'
 ]
