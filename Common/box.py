@@ -13,6 +13,7 @@ from selenium.webdriver import ActionChains
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions
 from selenium.webdriver.support.wait import WebDriverWait
+from selenium.webdriver.common.keys import Keys
 import traceback
 
 
@@ -90,6 +91,22 @@ class BaseDriver(object):
             raise NameError("Please enter a valid locator of targeting elements.")
         return element
 
+    def _locate_elements(self, selector):
+        """
+        to locate element by selector
+        :arg
+        selector should be passed by an example with "i,xxx"
+        "x,//*[@id='langs']/button"
+        :returns
+        DOM element
+        """
+        locator = self._convert_selector_to_locator(selector)
+        if locator is not None:
+            element = self._base_driver.find_elements(*locator)
+        else:
+            raise NameError("Please enter a valid locator of targeting elements.")
+        return element
+
     def _convert_selector_to_locator(self, selector):
         """
         转换自定义的 selector 为 Selenium 支持的 locator
@@ -135,11 +152,12 @@ class BaseDriver(object):
 
     def exist_ele(self, text):
         selector = 'x, //*[contains(text(), "%s")]' % text
+        self.logger.debug('selector是：%s' % selector)
         try:
             self._locate_element(selector)
             return True
-        except Exception as e:
-            self.logger.error(e)
+        except:
+            self.logger.debug('未找到元素%s' % selector)
             return False
 
     def table_is_not_null(self):
@@ -169,20 +187,6 @@ class BaseDriver(object):
         except Exception as e:
             self.logger.debug(e)
             return False
-
-    def type_time(self, name, value):
-        try:
-            start_time = value.split('&')[0]
-            end_time = value.split('&')[1]
-            selector = 'x, //span[contains(text(), "%s")]/following-sibling::*' % name
-            sel_start = 'x, //input[@placeholder="开始日期"]'
-            sel_end = 'x, //input[@placeholder="结束日期"]'
-            self.click(selector)
-            self.forced_wait(0.5)
-            self._locate_element(sel_start).__setattr__(value, start_time)
-            self._locate_element(sel_end).__setattr__(value, end_time)
-        except:
-            self.logger.error()
 
     # 等待相关
     @staticmethod

@@ -34,12 +34,20 @@ class YamlHelper(object):
 class Logger(object):
     conf = ConfigHelper()
     log_path = conf.conf_read('log', 'path')
+    log_level = conf.conf_read('log', 'level')
 
     def __init__(self, path=log_path):
         self.file_name = path + 'fusion_automate_log_%s.log' % time.strftime("%Y%m%d", time.localtime())
         self.logger = logging.getLogger()
         # 日志输出的级别
-        self.logger.setLevel(logging.DEBUG)
+        if self.log_level == 'error':
+            self.logger.setLevel(logging.ERROR)
+        elif self.log_level == 'warning':
+            self.logger.setLevel(logging.WARNING)
+        elif self.log_level == 'info':
+            self.logger.setLevel(logging.INFO)
+        else:
+            self.logger.setLevel(logging.DEBUG)
         # 日志输出格式
         self.formatter = logging.Formatter('%(asctime)s [%(levelname)s] : %(message)s',
                                            datefmt='%Y-%m-%d %H:%M:%S')
@@ -68,7 +76,7 @@ class Logger(object):
         """
         self._console("warning", message)
 
-    def error(self, message):
+    def error(self, message=None):
         """
         添加错误日志
         :param message:
@@ -97,7 +105,7 @@ class Logger(object):
         elif level == 'warning':
             self.logger.warning(message)
         elif level == 'error':
-            self.logger.error(message)
+            # self.logger.error(message)
             # 使用traceback打印报错的详细位置
             self.logger.error(traceback.format_exc())
 
