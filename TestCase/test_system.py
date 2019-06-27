@@ -80,4 +80,11 @@ class SystemTest(BaseCase):
             self.system_page.search_baseshelldomain(**d)
             self.assertEqual(self.driver.table_is_not_null(), True, '%s查询结果为空' % d)
 
-
+    def test_search_actionlog(self):
+        menu = ('行为管理', '行为日志')
+        data = [{'ip': '47.254.201.214', 'user': '', 'actionname': '', 'time': '2019-05-11&2019-06-11', 'actor': ''},
+                {'ip': '', 'user': '', 'actionname': '', 'time': '2019-05-11&2019-06-11', 'actor': 'qa'}]
+        for d in data:
+            self.system_page.open_menu(*menu)
+            self.system_page.search_actionlog(**d)
+            self.assertEqual(self.driver.table_is_not_null(), True, '%s查询结果为空' % d)

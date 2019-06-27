@@ -170,6 +170,19 @@ class BaseDriver(object):
             self.logger.debug(e)
             return False
 
+    def type_time(self, name, value):
+        try:
+            start_time = value.split('&')[0]
+            end_time = value.split('&')[1]
+            selector = 'x, //span[contains(text(), "%s")]/following-sibling::*' % name
+            sel_start = 'x, //input[@placeholder="开始日期"]'
+            sel_end = 'x, //input[@placeholder="结束日期"]'
+            self.click(selector)
+            self.forced_wait(0.5)
+            self._locate_element(sel_start).__setattr__(value, start_time)
+            self._locate_element(sel_end).__setattr__(value, end_time)
+        except:
+            self.logger.error()
 
     # 等待相关
     @staticmethod

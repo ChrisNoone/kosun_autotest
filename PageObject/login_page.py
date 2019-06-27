@@ -8,8 +8,11 @@ class LoginPageElement(BasePage):
     cd_login = YamlHelper.yaml_read('./Yaml/fusion.yaml')['Login']
 
     def login(self):
-        self.driver.type(self.cd_login['usernameInp'], 'qa')
-        self.driver.type(self.cd_login['pwdInp'], '123456')
+        conf = ConfigHelper()
+        username = conf.conf_read('fusion', 'username')
+        pwd = conf.conf_read('fusion', 'password')
+        self.driver.type(self.cd_login['usernameInp'], username)
+        self.driver.type(self.cd_login['pwdInp'], pwd)
         # captcha = self.driver.get_attribute(self.cd_login['captchaImg'], 'src')
         # capt = Captcha()
         # text = capt.captcha(captcha)
@@ -18,7 +21,7 @@ class LoginPageElement(BasePage):
         self.driver.click(self.cd_login['captchaInp'])
         self.driver.forced_wait(5)
         self.driver.click(self.cd_login['loginBut'])
-        self.driver.forced_wait(3)
+        self.driver.explicitly_wait('x, //*[contains(text(), "现金系统")]', 20)
 
     # def get_url(self):
     #     self.driver.forced_wait(3)

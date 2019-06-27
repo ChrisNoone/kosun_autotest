@@ -53,3 +53,22 @@ class SystemPageElement(BasePage):
         self.driver.forced_wait(1)
         self.driver.click(self.cd_system['searchB'])
         self.driver.forced_wait(2)
+
+    def search_actionlog(self, **kw):
+        if kw['ip']:
+            self.driver.type_search_input('IP', kw['ip'])
+        if kw['user']:
+            self.driver.type_search_input('會員帳號', kw['user'])
+        if kw['actionname']:
+            self.driver.type_search_input('行为名称', kw['actionname'])
+        if kw['time']:
+            try:
+                self.driver.type_time('执行时间', kw['time'])
+                self.driver.click('x, //span[contains(text(), "%s")]' % '执行时间')
+            except Exception as e:
+                self.logger.error(e)
+        if kw['actor']:
+            self.driver.type_search_input('执行者', kw['actor'])
+        self.driver.forced_wait(1)
+        self.driver.click(self.cd_system['searchB'])
+        self.driver.forced_wait(2)
