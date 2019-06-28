@@ -11,6 +11,7 @@ class Runner(object):
         suite = BaseSuite()
         tests = []
         test_file = base.CsvHelper().read_data_as_dict("./TestData/all_test.csv")
+        # todo: 实现数据驱动
         for row in test_file:
             if int(row["status"]):
                 if row["class"] == "LoginTest":

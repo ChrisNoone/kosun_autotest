@@ -63,6 +63,7 @@ class SystemPageElement(BasePage):
             self.driver.type_search_input('行为名称', kw['actionname'])
         if kw['actor']:
             self.driver.type_search_input('执行者', kw['actor'])
+        # todo: 处理时间控件的参数化
         self.driver.click('x, //*[contains(text(), "执行时间")]/following-sibling::*')
         self.driver.forced_wait(1)
         self.driver.click('x, //*[contains(text(), "本月")]')
