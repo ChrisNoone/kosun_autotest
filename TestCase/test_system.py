@@ -88,3 +88,21 @@ class SystemTest(BaseCase):
             self.system_page.open_menu(*menu)
             self.system_page.search_actionlog(**d)
             self.assertEqual(self.driver.table_is_not_null(), True, '%s查询结果为空' % d)
+
+    def test_search_feedback(self):
+        menu = ('后台用户管理', '用户反馈')
+        data = [{'status': '已读', 'type': '', 'user': ''},
+                {'status': '', 'type': '程序bug', 'user': ''}]
+        for d in data:
+            self.system_page.open_menu(*menu)
+            self.system_page.search_feedback(**d)
+            self.assertEqual(self.driver.table_is_not_null(), True, '%s查询结果为空' % d)
+
+    def test_search_member(self):
+        menu = ('后台用户管理', '管理员信息')
+        data = [{'member': 'qa'},
+                {'member': 'qa01'}]
+        for d in data:
+            self.system_page.open_menu(*menu)
+            self.system_page.search_member(**d)
+            self.assertEqual(self.driver.table_is_not_null(), True, '%s查询结果为空' % d)

@@ -69,3 +69,21 @@ class SystemPageElement(BasePage):
         self.driver.forced_wait(1)
         self.driver.click(self.cd_system['searchB'])
         self.driver.forced_wait(2)
+
+    def search_feedback(self, **kw):
+        if['status']:
+            self.driver.type_search_input('状态', kw['status'])
+        if ['type']:
+            self.driver.type_search_input('问题类型', kw['type'])
+        if ['user']:
+            self.driver.type_search_input('反馈用户', kw['user'])
+        self.driver.forced_wait(1)
+        self.driver.click(self.cd_system['searchB'])
+        self.driver.forced_wait(2)
+
+    def search_member(self, **kw):
+        if['member']:
+            self.driver.type_search_input('用户名', kw['member'])
+        self.driver.forced_wait(1)
+        self.driver.click(self.cd_system['searchB'])
+        self.driver.forced_wait(2)

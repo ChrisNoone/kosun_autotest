@@ -28,5 +28,7 @@ SystemTest,test_jump_menus,L,0,打开系统菜单下的各个页面
 SystemTest,test_switch_siteconfig_tab,L,0,切换网站设置中的tab
 SystemTest,test_search_menumanage,L,0,搜索菜单管理
 SystemTest,test_search_baseshell,L,0,搜索基础壳配置
-SystemTest,test_search_baseshelldomain,L,1,搜索基础壳多域名
-SystemTest,test_search_actionlog,L,1,搜索行为日志
+SystemTest,test_search_baseshelldomain,L,0,搜索基础壳多域名
+SystemTest,test_search_actionlog,L,0,搜索行为日志
+SystemTest,test_search_feedback,L,1,搜索用户反馈
+SystemTest,test_search_member,L,1,搜索管理员信息
