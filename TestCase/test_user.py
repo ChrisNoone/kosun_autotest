@@ -24,6 +24,19 @@ class UserTest(BaseCase):
     def tearDownClass(cls):
         cls.driver.quit()
 
+    def test_jump_menus(self):
+        data = [('账户管理', '特殊代理管理', '特殊代理用户'),
+                ('账户管理', '渠道管理', '渠道名称'),
+                ('账户管理', '会员管理', '用户名'),
+                ('账户管理', '会员层级管理', '名称'),
+                ('账户管理', '登录日志', '用户名'),
+                ('账户管理', '代理审核', '联系方式'),
+                ('账户管理', '代理码管理', '代理用户')
+                ]
+        for d in data:
+            self.user_page.open_menu(*d)
+            self.assertEqual(self.driver.exist_ele(d[2]), True, '%s查询结果为空' % str(d))
+
     @unittest.skip('repeat with test_search_specialagent')
     # 跳转到特殊代理管理页面
     def test_jump_specialagent(self):

@@ -22,6 +22,20 @@ class Runner(object):
                     tests.append(test_user.UserTest(row["method"]))
                 elif row["class"] == "SystemTest":
                     tests.append(test_system.SystemTest(row["method"]))
+                elif row["class"] == "SportsTest":
+                    tests.append(test_sports.SportsTest(row["method"]))
+                elif row["class"] == "ReportsTest":
+                    tests.append(test_reports.ReportsTest(row["method"]))
+                elif row["class"] == "MarketingTest":
+                    tests.append(test_marketing.MarketingTest(row["method"]))
+                elif row["class"] == "GameTest":
+                    tests.append(test_game.GameTest(row["method"]))
+                elif row["class"] == "ContentTest":
+                    tests.append(test_content.ContentTest(row["method"]))
+                elif row["class"] == "LotteryTest":
+                    tests.append(test_lottery.LotteryTest(row["method"]))
+                elif row["class"] == "CashTest":
+                    tests.append(test_cash.CashTest(row["method"]))
                 # elif row["class"] == "UserTest":
                 #     if row["mode"] == 'D':
                 #         test_data = [{'code': '501315', 'agent': ''}, {'code': '', 'agent': 'demo02'}]

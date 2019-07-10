@@ -19,7 +19,8 @@ class LoginPageElement(BasePage):
         # self.driver.type(self.cd_login['captchaInp'], text)
         # 等待手动输入验证码
         self.driver.click(self.cd_login['captchaInp'])
-        self.driver.forced_wait(5)
+        self.driver.forced_wait(2)
+        self.driver.type(self.cd_login['captchaInp'], '1234')
         self.driver.click(self.cd_login['loginBut'])
         self.driver.explicitly_wait('x, //*[contains(text(), "现金系统")]', 20)
 

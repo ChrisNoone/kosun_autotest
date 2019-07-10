@@ -53,3 +53,24 @@ System:
   appDiv: 'x, //div/div[contains(text(), "app")]'
   regconfDiv: 'x, //div/div[contains(text(), "注册配置")]'
   agentregconfDiv: 'x, //div/div[contains(text(), "代理注册配置")]'
+
+Reports:
+
+
+Sports:
+
+
+Marketing:
+
+
+Game:
+
+
+Content:
+
+
+Lottery:
+
+
+Cash:
+
