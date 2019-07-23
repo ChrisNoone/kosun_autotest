@@ -18,3 +18,13 @@ class SportsPageElement(BasePage):
             self.driver.click(memu_a)
         self.driver.forced_wait(1)
 
+    def search_sportsmatches(self, **kw):
+        if kw['sport']:
+            self.driver.type_search_input('选择体育', kw['sport'])
+        if kw['status']:
+            self.driver.type_search_input('状态', kw['status'])
+        if kw['league']:
+            self.driver.type_search_input('联赛', kw['league'])
+        self.driver.forced_wait(1)
+        self.driver.click(self.cd_sports['searchB'])
+        self.driver.forced_wait(2)

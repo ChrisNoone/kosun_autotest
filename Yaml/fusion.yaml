@@ -58,7 +58,7 @@ Reports:
 
 
 Sports:
-
+  searchB: 'x, //button[@type="submit"]'
 
 Marketing:
 

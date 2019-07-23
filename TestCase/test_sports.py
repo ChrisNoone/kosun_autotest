@@ -4,6 +4,7 @@ from Common.base import *
 from Common.box import *
 from PageObject import *
 import time
+import unittest
 
 
 class SportsTest(BaseCase):
@@ -40,3 +41,12 @@ class SportsTest(BaseCase):
         for d in data:
             self.sports_page.open_menu(*d)
             self.assertEqual(self.driver.exist_ele(d[2]), True, '%s查询结果为空' % str(d))
+
+    def func_search_sportsmatches(self, preset='preset', expect='expect'):
+        menu = ('赛事管理', '联赛管理')
+        data = [{'sport': '竞彩足球', 'status': '', 'league': ''}]
+        self.logger.info(preset, expect)
+        for d in data:
+            self.sports_page.open_menu(*menu)
+            self.sports_page.search_sportsmatches(**d)
+            self.assertEqual(self.driver.table_is_not_null(), True, '%s查询结果为空' % d)
